@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Fitness Zone – Birmitrapur's Premier Gym</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600;700&family=Barlow+Condensed:wght@600;700;800&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --navy:   #0b1629;
+      --navy2:  #112240;
+      --accent: #e8b84b;
+      --accent2:#f5d06e;
+      --white:  #f4f6fb;
+      --muted:  #8a9bbf;
+      --card:   #14213d;
+      --border: rgba(232,184,75,0.18);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--navy);
+      color: var(--white);
+      overflow-x: hidden;
+    }
+
+    /* ─── STICKY NAV ─── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 6vw;
+      height: 70px;
+      background: rgba(11,22,41,0.88);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+      transition: box-shadow .3s;
+    }
+    nav.scrolled { box-shadow: 0 4px 40px rgba(0,0,0,.55); }
+
+    .logo {
+      display: flex; align-items: center; gap: 10px;
+      text-decoration: none;
+    }
+    .logo-icon {
+      width: 40px; height: 40px;
+      background: var(--accent);
+      border-radius: 8px;
+      display: grid; place-items: center;
+    }
+    .logo-icon svg { width: 24px; height: 24px; fill: var(--navy); }
+    .logo-name {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.55rem;
+      letter-spacing: 2px;
+      color: var(--white);
+      line-height: 1;
+    }
+    .logo-name span { color: var(--accent); }
+
+    .nav-links {
+      display: flex; gap: 2.2rem; list-style: none;
+      align-items: center;
+    }
+    .nav-links a {
+      color: var(--muted); text-decoration: none;
+      font-size: .9rem; font-weight: 500;
+      letter-spacing: .5px;
+      transition: color .2s;
+    }
+    .nav-links a:hover { color: var(--accent); }
+
+    .btn-call {
+      background: var(--accent);
+      color: var(--navy);
+      font-weight: 700;
+      font-size: .9rem;
+      padding: 10px 22px;
+      border-radius: 6px;
+      text-decoration: none;
+      letter-spacing: .5px;
+      transition: background .2s, transform .2s, box-shadow .2s;
+      white-space: nowrap;
+    }
+    .btn-call:hover {
+      background: var(--accent2);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 24px rgba(232,184,75,.35);
+    }
+
+    .hamburger {
+      display: none; flex-direction: column; gap: 5px;
+      cursor: pointer; background: none; border: none; padding: 4px;
+    }
+    .hamburger span {
+      display: block; width: 26px; height: 2px;
+      background: var(--white); border-radius: 2px;
+      transition: .3s;
+    }
+
+    /* ─── MOBILE NAV ─── */
+    @media(max-width: 768px) {
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+      nav { padding: 0 5vw; }
+
+      .mobile-menu {
+        display: none;
+        position: fixed; top: 70px; left: 0; right: 0;
+        background: var(--navy2);
+        border-bottom: 1px solid var(--border);
+        flex-direction: column;
+        padding: 1.5rem 5vw 2rem;
+        gap: 1.4rem;
+        z-index: 99;
+      }
+      .mobile-menu.open { display: flex; }
+      .mobile-menu a {
+        color: var(--white); text-decoration: none;
+        font-size: 1.1rem; font-weight: 500;
+      }
+      .mobile-menu .btn-call { align-self: flex-start; margin-top: .5rem; }
+    }
+
+    /* ─── HERO ─── */
+    .hero {
+      min-height: 100vh;
+      display: flex; align-items: center;
+      padding: 110px 6vw 80px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* grid texture overlay */
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(232,184,75,.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(232,184,75,.04) 1px, transparent 1px);
+      background-size: 60px 60px;
+      pointer-events: none;
+    }
+
+    /* diagonal gold stripe */
+    .hero::after {
+      content: '';
+      position: absolute;
+      width: 700px; height: 700px;
+      right: -180px; top: -120px;
+      background: radial-gradient(ellipse at center, rgba(232,184,75,.13) 0%, transparent 70%);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .hero-content { position: relative; z-index: 2; max-width: 720px; }
+
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(232,184,75,.12);
+      border: 1px solid var(--border);
+      border-radius: 30px;
+      padding: 6px 16px;
+      font-size: .8rem;
+      font-weight: 600;
+      letter-spacing: 1.2px;
+      color: var(--accent);
+      text-transform: uppercase;
+      margin-bottom: 1.4rem;
+      animation: fadeUp .7s ease both;
+    }
+    .badge-dot {
+      width: 7px; height: 7px;
+      background: var(--accent);
+      border-radius: 50%;
+      animation: pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+      0%,100% { opacity: 1; transform: scale(1); }
+      50% { opacity: .5; transform: scale(1.4); }
+    }
+
+    .hero h1 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(3.2rem, 9vw, 6.5rem);
+      line-height: .95;
+      letter-spacing: 2px;
+      color: var(--white);
+      animation: fadeUp .75s .1s ease both;
+    }
+    .hero h1 em {
+      font-style: normal;
+      color: var(--accent);
+    }
+
+    .hero-sub {
+      font-size: clamp(.95rem, 2vw, 1.15rem);
+      color: var(--muted);
+      line-height: 1.7;
+      max-width: 520px;
+      margin: 1.4rem 0 2.4rem;
+      font-weight: 300;
+      animation: fadeUp .75s .2s ease both;
+    }
+
+    .hero-actions {
+      display: flex; gap: 1rem; flex-wrap: wrap;
+      animation: fadeUp .75s .3s ease both;
+    }
+
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--accent);
+      color: var(--navy);
+      font-weight: 700;
+      font-size: 1rem;
+      padding: 15px 32px;
+      border-radius: 8px;
+      text-decoration: none;
+      letter-spacing: .5px;
+      transition: background .2s, transform .2s, box-shadow .2s;
+    }
+    .btn-primary:hover {
+      background: var(--accent2);
+      transform: translateY(-3px);
+      box-shadow: 0 10px 32px rgba(232,184,75,.4);
+    }
+    .btn-primary svg { width: 18px; height: 18px; }
+
+    .btn-secondary {
+      display: inline-flex; align-items: center; gap: 8px;
+      border: 1px solid var(--border);
+      color: var(--white);
+      font-weight: 600;
+      font-size: 1rem;
+      padding: 15px 32px;
+      border-radius: 8px;
+      text-decoration: none;
+      letter-spacing: .5px;
+      transition: border-color .2s, color .2s, transform .2s;
+    }
+    .btn-secondary:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      transform: translateY(-3px);
+    }
+
+    .hero-stats {
+      display: flex; gap: 2.5rem; margin-top: 3.5rem;
+      animation: fadeUp .75s .4s ease both;
+      flex-wrap: wrap;
+    }
+    .stat { border-left: 2px solid var(--accent); padding-left: 1rem; }
+    .stat-num {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 2rem; font-weight: 800;
+      color: var(--white); line-height: 1;
+    }
+    .stat-label { font-size: .78rem; color: var(--muted); margin-top: 3px; text-transform: uppercase; letter-spacing: .8px; }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(28px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ─── SECTION BASE ─── */
+    section { padding: 90px 6vw; }
+    .section-label {
+      font-size: .75rem; font-weight: 700;
+      color: var(--accent);
+      text-transform: uppercase; letter-spacing: 2px;
+      margin-bottom: .6rem;
+    }
+    .section-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      line-height: 1.05;
+      letter-spacing: 1px;
+      margin-bottom: 1rem;
+    }
+    .section-sub {
+      color: var(--muted);
+      font-size: .98rem;
+      line-height: 1.7;
+      max-width: 540px;
+      font-weight: 300;
+    }
+
+    /* ─── SERVICES ─── */
+    .services { background: var(--navy2); }
+    .services-header { text-align: center; margin-bottom: 3.5rem; }
+    .services-header .section-sub { margin: 0 auto; }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 2.2rem 2rem;
+      transition: transform .3s, box-shadow .3s, border-color .3s;
+      position: relative;
+      overflow: hidden;
+    }
+    .card::before {
+      content: '';
+      position: absolute; bottom: 0; left: 0; right: 0; height: 3px;
+      background: var(--accent);
+      transform: scaleX(0); transform-origin: left;
+      transition: transform .35s;
+    }
+    .card:hover { transform: translateY(-8px); box-shadow: 0 20px 50px rgba(0,0,0,.5); border-color: rgba(232,184,75,.4); }
+    .card:hover::before { transform: scaleX(1); }
+
+    .card-icon {
+      width: 56px; height: 56px;
+      background: rgba(232,184,75,.12);
+      border-radius: 12px;
+      display: grid; place-items: center;
+      margin-bottom: 1.4rem;
+    }
+    .card-icon svg { width: 28px; height: 28px; stroke: var(--accent); fill: none; stroke-width: 1.8; }
+    .card h3 {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1.35rem; font-weight: 700;
+      letter-spacing: .5px;
+      margin-bottom: .7rem;
+    }
+    .card p { color: var(--muted); font-size: .9rem; line-height: 1.65; font-weight: 300; }
+
+    .card-tag {
+      display: inline-block;
+      margin-top: 1.2rem;
+      background: rgba(232,184,75,.1);
+      color: var(--accent);
+      font-size: .74rem;
+      font-weight: 600;
+      letter-spacing: .8px;
+      text-transform: uppercase;
+      padding: 4px 12px;
+      border-radius: 20px;
+    }
+
+    /* ─── ABOUT ─── */
+    .about { background: var(--navy); }
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5vw;
+      align-items: start;
+    }
+    @media(max-width: 768px) { .about-grid { grid-template-columns: 1fr; } }
+
+    .about-story p {
+      color: var(--muted);
+      font-size: .97rem; line-height: 1.8;
+      font-weight: 300;
+      margin-bottom: 1.1rem;
+    }
+    .about-story p strong { color: var(--white); font-weight: 600; }
+
+    .about-img-box {
+      position: relative;
+      border-radius: 14px;
+      overflow: hidden;
+      background: var(--card);
+      border: 1px solid var(--border);
+      min-height: 300px;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: 1rem;
+      padding: 2.5rem;
+    }
+    .about-img-box .gym-visual {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 4rem;
+      color: var(--accent);
+      letter-spacing: 4px;
+    }
+    .about-img-box p { color: var(--muted); font-size: .85rem; text-align: center; }
+
+    .testimonials { margin-top: 2rem; }
+    .testimonials h4 {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1.1rem; font-weight: 700;
+      letter-spacing: 1px;
+      color: var(--white);
+      text-transform: uppercase;
+      margin-bottom: 1.2rem;
+    }
+
+    .testi {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 1rem;
+      transition: border-color .2s;
+    }
+    .testi:hover { border-color: rgba(232,184,75,.4); }
+
+    .testi-stars { color: var(--accent); font-size: 1rem; margin-bottom: .6rem; }
+    .testi-text { color: var(--muted); font-size: .9rem; line-height: 1.65; font-style: italic; font-weight: 300; margin-bottom: .9rem; }
+    .testi-author { display: flex; align-items: center; gap: .7rem; }
+    .testi-avatar {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      background: var(--accent);
+      display: grid; place-items: center;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1rem;
+      color: var(--navy);
+    }
+    .testi-name { font-weight: 600; font-size: .88rem; }
+    .testi-role { font-size: .75rem; color: var(--muted); }
+
+    /* ─── OFFER STRIP ─── */
+    .offer-strip {
+      background: var(--accent);
+      padding: 1.4rem 6vw;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 1.5rem; flex-wrap: wrap;
+    }
+    .offer-strip p {
+      color: var(--navy);
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1.3rem;
+      font-weight: 700;
+      letter-spacing: .5px;
+    }
+    .offer-strip a {
+      background: var(--navy);
+      color: var(--white);
+      font-weight: 700;
+      font-size: .9rem;
+      padding: 11px 26px;
+      border-radius: 6px;
+      text-decoration: none;
+      white-space: nowrap;
+      transition: background .2s, transform .2s;
+    }
+    .offer-strip a:hover { background: var(--navy2); transform: translateY(-2px); }
+
+    /* ─── FOOTER ─── */
+    footer {
+      background: var(--navy2);
+      border-top: 1px solid var(--border);
+      padding: 70px 6vw 30px;
+    }
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      gap: 3vw;
+      margin-bottom: 3rem;
+    }
+    @media(max-width: 768px) {
+      .footer-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+    }
+
+    .footer-brand .logo { margin-bottom: 1rem; }
+    .footer-brand p {
+      color: var(--muted);
+      font-size: .88rem; line-height: 1.7;
+      font-weight: 300;
+      max-width: 300px;
+    }
+
+    .footer-col h5 {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1rem; font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1.2rem;
+    }
+    .footer-col ul { list-style: none; }
+    .footer-col li { margin-bottom: .6rem; }
+    .footer-col a { color: var(--muted); text-decoration: none; font-size: .88rem; transition: color .2s; }
+    .footer-col a:hover { color: var(--accent); }
+
+    .contact-info li {
+      display: flex; align-items: flex-start; gap: .6rem;
+      margin-bottom: .75rem;
+    }
+    .contact-info svg { width: 16px; height: 16px; stroke: var(--accent); fill: none; stroke-width: 1.8; flex-shrink: 0; margin-top: 2px; }
+    .contact-info span { color: var(--muted); font-size: .88rem; line-height: 1.5; }
+    .contact-info a { color: var(--muted); text-decoration: none; transition: color .2s; }
+    .contact-info a:hover { color: var(--accent); }
+
+    .map-embed {
+      margin-top: 1.2rem;
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+    .map-embed iframe {
+      width: 100%; height: 160px;
+      border: none; display: block;
+      filter: grayscale(40%) contrast(1.05);
+    }
+
+    .social-links { display: flex; gap: 1rem; margin-top: 1.2rem; }
+    .social-link {
+      width: 38px; height: 38px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      display: grid; place-items: center;
+      color: var(--muted);
+      text-decoration: none;
+      transition: border-color .2s, color .2s, transform .2s;
+    }
+    .social-link:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-3px); }
+    .social-link svg { width: 17px; height: 17px; }
+
+    .footer-bottom {
+      border-top: 1px solid var(--border);
+      padding-top: 1.5rem;
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 1rem;
+    }
+    .footer-bottom p { color: var(--muted); font-size: .8rem; }
+
+    /* ─── SCROLL REVEAL ─── */
+    .reveal { opacity: 0; transform: translateY(30px); transition: opacity .7s ease, transform .7s ease; }
+    .reveal.visible { opacity: 1; transform: none; }
+
+    /* ─── BACK TO TOP ─── */
+    .back-top {
+      position: fixed; bottom: 1.5rem; right: 1.5rem;
+      width: 44px; height: 44px;
+      background: var(--accent);
+      color: var(--navy);
+      border-radius: 50%;
+      display: grid; place-items: center;
+      text-decoration: none;
+      opacity: 0; pointer-events: none;
+      transition: opacity .3s, transform .3s;
+      z-index: 90;
+    }
+    .back-top.show { opacity: 1; pointer-events: all; }
+    .back-top:hover { transform: translateY(-4px); }
+    .back-top svg { width: 20px; height: 20px; stroke: var(--navy); fill: none; stroke-width: 2.2; }
+  </style>
+</head>
+<body>
+
+<!-- ─── STICKY NAV ─── -->
+<nav id="navbar">
+  <a href="#" class="logo">
+    <div class="logo-icon">
+      <svg viewBox="0 0 24 24"><path d="M6 4v16M18 4v16M3 10h18M3 14h18"/></svg>
+    </div>
+    <div class="logo-name">Fitness <span>Zone</span></div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#services">Services</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#contact">Contact</a></li>
+    <li><a class="btn-call" href="tel:+917894561230">📞 Call Now</a></li>
+  </ul>
+  <button class="hamburger" id="hamburger" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- Mobile menu -->
+<div class="mobile-menu" id="mobile-menu">
+  <a href="#services" onclick="closeMobileMenu()">Services</a>
+  <a href="#about" onclick="closeMobileMenu()">About</a>
+  <a href="#contact" onclick="closeMobileMenu()">Contact</a>
+  <a class="btn-call" href="tel:+917894561230">📞 Call Now</a>
+</div>
+
+<!-- ─── HERO ─── -->
+<section class="hero" id="home">
+  <div class="hero-content">
+    <div class="hero-badge">
+      <span class="badge-dot"></span>
+      Now Open in Birmitrapur
+    </div>
+    <h1>Build the Body<br/><em>You Deserve.</em></h1>
+    <p class="hero-sub">
+      Birmitrapur's most complete fitness destination — cutting-edge equipment, expert trainers, and a community that pushes you to go further every single day.
+    </p>
+    <div class="hero-actions">
+      <a href="#contact" class="btn-primary">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        Get a Free Quote
+      </a>
+      <a href="#services" class="btn-secondary">
+        Explore Services →
+      </a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat">
+        <div class="stat-num">500+</div>
+        <div class="stat-label">Active Members</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">15+</div>
+        <div class="stat-label">Expert Trainers</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">5★</div>
+        <div class="stat-label">Community Rating</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── SERVICES ─── -->
+<section class="services" id="services">
+  <div class="services-header reveal">
+    <div class="section-label">What We Offer</div>
+    <div class="section-title">Programs Built for <em style="font-style:normal;color:var(--accent)">Real Results</em></div>
+    <p class="section-sub">Whether you're just starting or training seriously, we have the right program to match your goals.</p>
+  </div>
+  <div class="cards">
+    <div class="card reveal">
+      <div class="card-icon">
+        <svg viewBox="0 0 24 24"><path d="M6 4v16M18 4v16M3 10h18M3 14h18"/></svg>
+      </div>
+      <h3>Strength & Weight Training</h3>
+      <p>World-class free weights, machines, and barbells. Structured programs for muscle building, powerlifting, and body recomposition — guided by certified coaches.</p>
+      <span class="card-tag">All Levels Welcome</span>
+    </div>
+    <div class="card reveal">
+      <div class="card-icon">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+      </div>
+      <h3>Cardio & HIIT Classes</h3>
+      <p>Burn fat, boost endurance, and improve heart health with our high-energy group cardio sessions and individually designed HIIT circuits.</p>
+      <span class="card-tag">Daily Sessions</span>
+    </div>
+    <div class="card reveal">
+      <div class="card-icon">
+        <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+      </div>
+      <h3>Personal Coaching</h3>
+      <p>One-on-one sessions with dedicated trainers who create custom nutrition & workout plans tailored exactly to your body, lifestyle, and ambitions.</p>
+      <span class="card-tag">1-on-1 Sessions</span>
+    </div>
+  </div>
+</section>
+
+<!-- ─── ABOUT ─── -->
+<section class="about" id="about">
+  <div class="about-grid">
+    <div>
+      <div class="section-label reveal">Our Story</div>
+      <div class="section-title reveal">Rooted in <em style="font-style:normal;color:var(--accent)">Birmitrapur,</em><br/>Built for You</div>
+      <div class="about-story reveal">
+        <p>Fitness Zone was founded right here in <strong>Birmitrapur</strong> with one simple belief — everyone deserves access to world-class fitness, without travelling to a big city for it.</p>
+        <p>We started as a small passion project, and today we're the <strong>region's most trusted fitness hub</strong>, serving hundreds of members — from college students to working professionals and senior citizens.</p>
+        <p>Our trainers are <strong>nationally certified</strong>, our equipment is <strong>premium-grade</strong>, and our community is the most supportive you'll find anywhere in Odisha. When you walk through our doors, you're not just joining a gym — <strong>you're joining a family.</strong></p>
+      </div>
+      <div class="testimonials reveal">
+        <h4>What Our Members Say</h4>
+        <div class="testi">
+          <div class="testi-stars">★★★★★</div>
+          <p class="testi-text">"I lost 14 kg in 4 months with the personal coaching program. The trainers here genuinely care about your progress. Best decision I ever made!"</p>
+          <div class="testi-author">
+            <div class="testi-avatar">R</div>
+            <div>
+              <div class="testi-name">Rahul Mahapatra</div>
+              <div class="testi-role">Member since 2023 · Birmitrapur</div>
+            </div>
+          </div>
+        </div>
+        <div class="testi">
+          <div class="testi-stars">★★★★★</div>
+          <p class="testi-text">"The HIIT classes are incredible — high energy, great trainers, and amazing atmosphere. I drive 20 km just to work out here and it's 100% worth it."</p>
+          <div class="testi-author">
+            <div class="testi-avatar">P</div>
+            <div>
+              <div class="testi-name">Priya Singh</div>
+              <div class="testi-role">Member since 2024 · Rourkela</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="about-img-box reveal">
+        <div class="gym-visual">FZ</div>
+        <p>Birmitrapur's Premier Fitness Destination</p>
+        <div style="display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;margin-top:.5rem">
+          <div style="text-align:center">
+            <div style="font-family:'Bebas Neue',sans-serif;font-size:1.8rem;color:var(--accent)">5000+</div>
+            <div style="font-size:.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:.6px">Sq Ft Space</div>
+          </div>
+          <div style="text-align:center">
+            <div style="font-family:'Bebas Neue',sans-serif;font-size:1.8rem;color:var(--accent)">50+</div>
+            <div style="font-size:.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:.6px">Equipment</div>
+          </div>
+          <div style="text-align:center">
+            <div style="font-family:'Bebas Neue',sans-serif;font-size:1.8rem;color:var(--accent)">6AM</div>
+            <div style="font-size:.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:.6px">Opens Daily</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── OFFER STRIP ─── -->
+<div class="offer-strip">
+  <p>🎯 First Month FREE for New Members — Limited Spots Available!</p>
+  <a href="tel:+917894561230">Claim Your Spot →</a>
+</div>
+
+<!-- ─── FOOTER / CONTACT ─── -->
+<footer id="contact">
+  <div class="footer-grid">
+    <div class="footer-brand reveal">
+      <a href="#" class="logo">
+        <div class="logo-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24"><path d="M6 4v16M18 4v16M3 10h18M3 14h18"/></svg>
+        </div>
+        <div class="logo-name">Fitness <span>Zone</span></div>
+      </a>
+      <p>Birmitrapur's most complete gym experience — where fitness meets community. Start your transformation today.</p>
+      <div class="social-links">
+        <!-- Instagram -->
+        <a href="#" class="social-link" aria-label="Instagram">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+        </a>
+        <!-- Facebook -->
+        <a href="#" class="social-link" aria-label="Facebook">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+        </a>
+        <!-- YouTube -->
+        <a href="#" class="social-link" aria-label="YouTube">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.97C18.88 4 12 4 12 4s-6.88 0-8.59.45A2.78 2.78 0 0 0 1.46 6.42 29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58 2.78 2.78 0 0 0 1.95 1.97C5.12 20 12 20 12 20s6.88 0 8.59-.45a2.78 2.78 0 0 0 1.96-1.97A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"/></svg>
+        </a>
+      </div>
+    </div>
+
+    <div class="footer-col reveal">
+      <h5>Quick Links</h5>
+      <ul>
+        <li><a href="#home">Home</a></li>
+        <li><a href="#services">Services</a></li>
+        <li><a href="#about">About Us</a></li>
+        <li><a href="#contact">Contact</a></li>
+        <li><a href="tel:+917894561230">Free Quote</a></li>
+      </ul>
+      <div style="margin-top:1.5rem">
+        <h5>Hours</h5>
+        <ul>
+          <li style="color:var(--muted);font-size:.88rem;margin-bottom:.4rem">Mon – Sat: 6:00 AM – 10:00 PM</li>
+          <li style="color:var(--muted);font-size:.88rem;margin-bottom:.4rem">Sunday: 7:00 AM – 8:00 PM</li>
+          <li style="color:var(--accent);font-size:.8rem;font-weight:600">✓ Open All Holidays</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-col reveal" id="contact">
+      <h5>Get in Touch</h5>
+      <ul class="contact-info">
+        <li>
+          <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.28h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9a16 16 0 0 0 6.29 6.29l1.06-1.06a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          <span><a href="tel:+917894561230">+91 78945 61230</a></span>
+        </li>
+        <li>
+          <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          <span><a href="mailto:info@fitnesszone.in">info@fitnesszone.in</a></span>
+        </li>
+        <li>
+          <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          <span>Near Main Road, Birmitrapur,<br/>Sundargarh, Odisha – 770024</span>
+        </li>
+      </ul>
+      <div class="map-embed">
+        <iframe
+          src="https://maps.google.com/maps?q=Birmitrapur,+Odisha&t=&z=14&ie=UTF8&iwloc=&output=embed"
+          title="Fitness Zone Location"
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+        ></iframe>
+      </div>
+      <div style="margin-top:.8rem">
+        <a href="https://maps.app.goo.gl/NmVsJuVbjAYDJQPY8"
+           target="_blank" rel="noopener"
+           style="color:var(--accent);font-size:.82rem;font-weight:600;text-decoration:none;display:inline-flex;align-items:center;gap:5px;transition:opacity .2s"
+           onmouseover="this.style.opacity='.75'"
+           onmouseout="this.style.opacity='1'">
+          📍 Open in Google Maps →
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <p>© 2025 Fitness Zone, Birmitrapur. All rights reserved.</p>
+    <p style="color:var(--muted)">Designed with 💪 for Birmitrapur</p>
+  </div>
+</footer>
+
+<!-- Back to top -->
+<a href="#home" class="back-top" id="backTop" aria-label="Back to top">
+  <svg viewBox="0 0 24 24"><polyline points="18 15 12 9 6 15"/></svg>
+</a>
+
+<script>
+  // Sticky nav shadow
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    navbar.classList.toggle('scrolled', window.scrollY > 40);
+    document.getElementById('backTop').classList.toggle('show', window.scrollY > 400);
+  });
+
+  // Hamburger
+  const ham = document.getElementById('hamburger');
+  const mobileMenu = document.getElementById('mobile-menu');
+  ham.addEventListener('click', () => mobileMenu.classList.toggle('open'));
+  function closeMobileMenu() { mobileMenu.classList.remove('open'); }
+
+  // Scroll reveal
+  const revealEls = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  revealEls.forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
